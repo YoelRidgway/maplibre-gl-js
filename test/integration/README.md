@@ -21,7 +21,7 @@ The contents of vector tile fixtures can be read using the [`vt2geojson`](https:
 All tests are run for every PR. If you're not sure yet if the tests are good, you may use a Draft PR to indicate that the work is still in progress.
 Each jos, or a group of tests, will create an artifact of any of its tests fail. The artifacts are found at the bottom of the jobs summary
 
-<image width="80%" src="https://github.com/maplibre/maplibre-gl-js/assets/1304610/bc313a30-cdec-4de5-b6c9-90637ffbf79a" alt="" />
+<img width="80%" src="https://github.com/maplibre/maplibre-gl-js/assets/1304610/bc313a30-cdec-4de5-b6c9-90637ffbf79a" alt="" />
 
 Download the appropriate artifact as a zip file, open it and view the `results.html` file it contains.
 The "Actual" image of a failed test can be saved and used as the new "Expected" image.
@@ -48,13 +48,19 @@ To run the build tests
 npm run test-build
 ```
 
-For running a subset of tests, you may use jest filters e.g.
+For running a subset of tests, you may use vitest filters e.g.
 
 ```
-npm run test-integration -- --testPathIgnorePatterns "/test/integration/(query|build)/"
+npm run test-integration -- browser
 ```
 
-Additionally, it may be helpful to use a visual jest frontend (e.g. `npx majestic`). Note that since render tests do not use Jest, these will still have to be run from the command line.
+Additionally, it may be helpful to use a visual frontend ([Vitest UI](https://vitest.dev/guide/ui.html)). Note that since render tests do not use Vitest, these will still have to be run from the command line. The UI can be started by replaceing `run` with `--ui` in package.json:
+
+```diff
+- "test-unit": "vitest run --config vitest.config.unit.ts",
++ "test-unit": "vitest --ui --config vitest.config.unit.ts",
+```
+
 
 ### Running specific tests
 
@@ -133,11 +139,7 @@ $env:UPDATE=$true; npm run test-render
 
 #### Notes on the query integration tests
 
-In test/integration/lib/query-browser-jest.test.ts a web server is automatically started to expose static assets from the integration folder. In order to start a similar server manually, run:
-
-```
-npx st  -l --port 7357 -d test/integration -co
-```
+In test/integration/browser/browser.test.ts a web server is automatically started to expose static assets from the integration folder. In order to start a similar server manually with `npm run start`.
 
 We currently run each test in a new tab. Alternatively we might gain some speed by clearing the webgl context instead, and running everything in one tab.
 
